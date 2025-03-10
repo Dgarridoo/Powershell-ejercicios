@@ -24,5 +24,5 @@ Add-Content -Path "la ruta" -Value "el texto o contenido que quieres que tenga d
 copy-item -Path "la ruta" -Destination "la ruta del otro fichero"
 
 #mover un fichero
-Move-Item -Path "la ruta de un fichero" -Destination "la ruta del otro"
+Move-Item -Path "la ruta de un fichero" -Destination "la ruta de la otra carpeta"
 
