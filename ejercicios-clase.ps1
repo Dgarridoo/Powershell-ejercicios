@@ -150,4 +150,20 @@ foreach($user in $useri){
     }
 }
 
-#
+#Crear un fichero con direccines ip
+New-Item -Path .\Desktop -name direcciones.txt -Type File -Value "192.168.1.1"
+Get-Content .\Desktop\direcciones.txt
+Add-Content -pass .\Desktop\direcciones.txt -Value "8.8.8.8"
+Test-Connection -IPAddress 192.168.12.9 -count 1
+
+#comprobar que las direcciones ip que le introduzcamos tiene o no conexxion
+
+$ip= Get-Content .\Desktop\direcciones.txt
+foreach ($ips in $ip){
+    if(Test-Connection -IPAddress $ips -Count 1 -Quiet){
+        Write-Host "La ip $ips existe"
+    }else{
+        Write-Host "La ip no $ips existe"
+    }
+}
+
