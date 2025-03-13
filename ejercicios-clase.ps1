@@ -167,3 +167,48 @@ foreach ($ips in $ip){
     }
 }
 
+<#un script que debe de solicitar un numero de usuarios a introducir una vez que tengamos ese numero debe  solicitar tantos 
+nombres de usuario como el numero que habriamos indicado si se ha introducido 0 solo debe mostrar los usuarios que ya existe en el sistema. Los nombres de ususarios han de almacenarse en un fichero que se llame
+ usuario.txt este fichero ha de estar en la siguiente url "c:\scripts\usuario.txt" si el fichero ya exisitera debo de añadir esos
+  nombres al ya existente. Con el fichero yab terminado he de comprobar uno a uno que existe usuarios y si no existe tendra que 
+  crearlos. la clave por defecto de cada usuario es "alumno.12345" mostrara por pantalla los usuarios que ya existen y los que se han creado nuevos. #>
+
+clear-host
+  $usuarios=@()
+  [int]$usu = Read-Host "Introduce un numero de usuarios"
+  if ($usu -eq 0){
+  Get-LocalUser
+}else{
+
+  for ($i = 1; $i -le $usu; $i++){
+    $usuario = read-host "Introduce el usuario$i"
+    $usuarios+=$usuario
+  }
+
+  if(test-path -path 'c:\script\usuario.txt'){
+  Remove-Item -Path c:\script\usuario.txt
+  Remove-Item -Path c:\script
+  New-Item -Path c:\ -ItemType Directory -Name script
+New-Item -Path c:\script\ -ItemType File -Name usuarios.txt
+Set-Content -Path c:\script\usuarios.txt -Value $usuarios
+  }else{
+  New-Item -Path c:\ -ItemType Directory -Name script
+New-Item -Path c:\script\ -ItemType File -Name usuarios.txt
+Set-Content -Path c:\script\usuarios.txt -Value $usuarios
+  }
+
+  $con= ConvertTo-SecureString "alumno.12345" -AsPlainText -force
+
+
+  foreach ($usuario in $usuarios)
+  {
+    $dir=Get-LocalUser $usuario -ErrorAction SilentlyContinue
+    if($dir){
+        Write-Host = "El usuario $usuario existe y se ha añadido a usuario.txt"
+    }else{
+        New-LocalUser -Name $usuario -Password $con -FullName $usuario
+        Write-Host = "El usuario $usuario no existe, se ha creado y se ha añadido a usuario.txt"
+    }
+  }
+  }
+
